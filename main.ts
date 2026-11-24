@@ -1,7 +1,9 @@
-// Token Launch Radar (token-radar-01 entry, Node 22, standard library only).
+// Launch Radar (token-radar-01 entry, Node 22, standard library only).
 //
 // Reads the sealed snapshot at /input/snapshot.json (or --input <file|dir>), scores every rankable
-// pre-token protocol with the market model in lib/model.ts, and writes the hand-in to /output:
+// pre-token protocol with the fitted model in lib/model.ts (radar-3: a held-out-tested launch
+// value times token odds from the peers' record, with conformal bands and costed farm verdicts),
+// and writes the hand-in to /output:
 //   board.json    the ranked board (the gate reads this)
 //   data.js       the same board, as the dashboard's dataset
 //   dashboard/    a copy of this repository's dashboard/
