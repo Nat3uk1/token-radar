@@ -200,7 +200,7 @@
     return el('div', null,
       el('h3', { text: title }),
       el('table', null,
-        el('thead', null, el('tr', null, el('th', { text: 'Term, added in order' }), el('th', { text: firstHead }), el('th', { text: secondHead }), el('th', { text: '' }))),
+        el('thead', null, el('tr', null, el('th', { text: 'Term, added in order' }), el('th', { text: firstHead }), el('th', { text: secondHead }), el('th', { text: 'Verdict' }))),
         el('tbody', null, rows.map(function (r) {
           return el('tr', null,
             el('td', { text: r.label }),
@@ -294,7 +294,7 @@
   }
 
   function sortTh(label, key) {
-    var mark = state.sort === key ? (state.dir === 1 ? ' ^' : ' v') : '';
+    var mark = state.sort === key ? (state.dir === 1 ? ' ↑' : ' ↓') : '';
     return el('th', null, el('button', { onclick: function () {
       if (state.sort === key) state.dir = -state.dir;
       else { state.sort = key; state.dir = key === 'rank' || key === 'name' ? 1 : -1; }
@@ -311,7 +311,9 @@
     ));
     var body = el('tbody', null, rows.map(function (r) {
       var v = rowVerdict(r);
-      return el('tr', { onclick: function () { state.selected = r.slug; render(); window.scrollTo(0, 0); } },
+      var rowAttrs = { onclick: function () { state.selected = r.slug; render(); window.scrollTo(0, 0); } };
+      if (r.rank <= 3) rowAttrs.class = 'toprow';
+      return el('tr', rowAttrs,
         el('td', { class: 'rank' }, String(r.rank), el('span', { class: 'rng', text: r.model.rank_lo === r.model.rank_hi ? '' : r.model.rank_lo + '-' + r.model.rank_hi })),
         el('td', { class: 'name' }, el('b', { text: r.name }),
           r.on_watchlist ? el('span', { class: 'badge watch', text: 'Watchlist' }) : el('span', { class: 'badge early', text: 'Off-list' }),
@@ -499,7 +501,7 @@
       )
     );
     return el('div', null,
-      el('button', { class: 'back', onclick: function () { state.selected = null; render(); }, text: '<- Back to the board' }),
+      el('button', { class: 'back', onclick: function () { state.selected = null; render(); }, text: '← Back to the board' }),
       head,
       el('div', { class: 'cols' },
         el('section', { class: 'panel' }, el('h2', { text: 'How the figure is made' }), waterfall(r)),
